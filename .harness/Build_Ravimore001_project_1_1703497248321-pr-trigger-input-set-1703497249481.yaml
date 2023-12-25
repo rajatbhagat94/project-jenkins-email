@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_Ravimore001_project_1_1703497248321-pr-trigger-input-set
+  identifier: Build_Ravimore001_project_1_1703497248321prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_Ravimore001_project_1_1703497248321
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
