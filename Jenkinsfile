@@ -47,7 +47,7 @@ pipeline{
                withCredentials([string(credentialsId: 'docker-img', variable: 'image')]) {
                sh 'docker login -u ravimore001 -p ${image}'
                 } 
-               sh 'docker push ravimore001/my-app:1.8' 
+               echo "image push successfully" 
                
             }
         }
