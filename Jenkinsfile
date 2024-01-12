@@ -1,46 +1,27 @@
 pipeline {
-agent {
-label {
-		label "built-in"
-		customWorkspace "/data/project-myapp"
-		
-		}
-		}
-		
-	stages {
-		
-		stage ('CLEAN_OLD_M2') {
-			
-			steps {
-				sh "rm -rf /home/saccount/.m2/repository"
-				
-			}
-			
-		}
-	
-		stage ('MAVEN_BUILD') {
-		
-			steps {
-						
-						sh "mvn clean package"
-			
-			}
-			
-		
-		}
-		
-		stage ('COPY_WAR_TO_Server'){
-		
-				steps {
-						
-						sh "scp -r target/LoginWebApp.war saccount@10.0.2.51:/data/project/wars"
+    agent {
+        label 'MASTER'  // Ensure this matches the exact case of your configured label
+        // Or, if you prefer any available agent:
+        // any
+    }
 
-						}
-				
-				}
-	
-	
-	
-	}
-		
+    stages {
+        stage('checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('sonar-scanner') {  // Indent this stage correctly
+            steps {
+                withSonarQubeEnv('sonar-server-7.8') {
+                    sh 'mvn sonar:sonar'  // Use the correct Maven command for SonarQube analysis
+                }
+            }
+        }
+    }
 }
