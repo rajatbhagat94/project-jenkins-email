@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'SLAVE'  // Ensure this matches the exact case of your configured label
+        label 'MASTER'  // Ensure this matches the exact case of your configured label
         // Or, if you prefer any available agent:
         // any
     }
