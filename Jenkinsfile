@@ -8,20 +8,41 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'
+                script {
+                    // Correcting the branch specification
+                    git branch: '*/master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'
+                }
             }
         }
         stage('build') {
             steps {
-                sh 'mvn clean install'
+                script {
+                    sh 'mvn clean install'
+                }
             }
         }
-        stage('sonar-scanner') {  // Indent this stage correctly
+        stage('sonar-scanner') {
             steps {
-                withSonarQubeEnv('sonar-server-7.8') {
-                    sh 'mvn sonar:sonar'  // Use the correct Maven command for SonarQube analysis
+                script {
+                    // Correcting the SonarQube environment name
+                    withSonarQubeEnv('sonar-server-7.8') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+        stage('email-notifi') {
+            steps {
+                script {
+                    // Correcting the email notification syntax
+                    emailext subject: 'This is text from Jenkins',
+                             body: 'Email body content',
+                             to: 'rajatpbhagat@gmail.com',
+                             replyTo: '',
+                             mimeType: 'text/html'
                 }
             }
         }
     }
 }
+
