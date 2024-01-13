@@ -1,55 +1,42 @@
-pipeline{
-    agent any
-    environment{
-    PATH="/opt/apache-maven-3.9.6/bin:$PATH"
+pipeline {
+    agent any  // Replace with a specific agent label if needed
+
+    environment {
+        PATH="/opt/apache-maven-3.9.6/bin:$PATH"  // Correct PATH setting
+        DOCKERHUB_CREDENTIALS = credentials ('docker-login')
     }
-    stages{
-        stage('git-clone'){
-            agent {
-                label 'master'
-            }
+
+    stages {
+        stage('checkout') {
             steps {
-                git 'https://github.com/Ravimore001/project-1.git'
-                stash 'code'
+                git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'  // Specify branch
             }
         }
-        stage('build'){
-            agent {
-                label 'agent-1'
-            }
-            steps{
-                unstash 'code'
+        stage('build') {
+            steps {
                 sh 'mvn clean install'
             }
         }
-         stage('email-notifi'){
-            agent {
-                label 'agent-1'
+         stage('email-notifi') {
+            steps {
+               mail bcc: '', body: 'Testing Done', cc: '', from: '', replyTo: '', subject: 'FOR TESTING ', to: 'rajatpbhagat@gmail.com'
             }
-            steps{
-                mail bcc: '', body: 'test has completed...', cc: '', from: '', replyTo: '', subject: 'testing mail.....', to: 'creativedevops2023@gmail.com'
-            }
-        }
+        } 
         stage('docker-build'){
-            agent {
-                label 'agent-1'
-            }
-            steps{
-                sh 'docker build -t ravimore001/my-app:1.8 .'
-               
+            steps {
+                sh 'docker build -t dockerhub1994/app-testing:10 .'
             }
         }
-        stage('push-img'){
-            agent {
-                label 'agent-1'
+        stage('login-to-docker') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
-            steps{
-               withCredentials([string(credentialsId: 'docker-img', variable: 'image')]) {
-               sh 'docker login -u ravimore001 -p ${image}'
-                } 
-               echo "image push successfully" 
-               
+        }
+        stage('Push-to-Dockerhub') {
+            steps {
+                sh 'docker push dockerhub1994/app-testing:10'
             }
         }
     }
 }
+
