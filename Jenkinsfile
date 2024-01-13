@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     // Correcting the branch specification
-                    git branch: '*/master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'
+                    git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'
                 }
             }
         }
@@ -25,23 +25,12 @@ pipeline {
             steps {
                 script {
                     // Correcting the SonarQube environment name
-                    withSonarQubeEnv('sonar-server-7.8') {
+                    withSonarQubeEnv('Sonarqube-7.8') {
                         sh 'mvn sonar:sonar'
                     }
                 }
             }
         }
-        stage('email-notifi') {
-            steps {
-                script {
-                    // Correcting the email notification syntax
-                    emailext subject: 'This is text from Jenkins',
-                             body: 'Email body content',
-                             to: 'rajatpbhagat@gmail.com',
-                             replyTo: '',
-                             mimeType: 'text/html'
-                }
-            }
-        }
+        
     }
 }
