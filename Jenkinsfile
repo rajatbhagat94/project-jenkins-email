@@ -1,36 +1,41 @@
 pipeline {
-    agent {
-        label 'MASTER'  // Ensure this matches the exact case of your configured label
-        // Or, if you prefer any available agent:
-        // any
+    agent any  // Replace with a specific agent label if needed
+
+    environment {
+        PATH="/opt/apache-maven-3.9.6/bin:$PATH"  // Correct PATH setting
+        DOCKERHUB_CREDENTIALS = credentials ('docker-login')
     }
 
     stages {
         stage('checkout') {
             steps {
-                script {
-                    // Correcting the branch specification
-                    git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'
-                }
+                git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'  // Specify branch
             }
         }
         stage('build') {
             steps {
-                script {
-                    sh 'mvn clean install'
-                }
+                sh 'mvn clean install'
             }
         }
-        stage('sonar-scanner') {
+         stage('email-notifi') {
             steps {
-                script {
-                    // Correcting the SonarQube environment name
-                    withSonarQubeEnv('Sonarqube-7.8') {
-                        sh 'mvn sonar:sonar'
-                    }
-                }
+               mail bcc: '', body: 'Testing Done', cc: '', from: '', replyTo: '', subject: 'FOR TESTING ', to: 'rajatpbhagat@gmail.com'
+            }
+        } 
+        stage('docker-build'){
+            steps {
+                sh 'docker build -t dockerhub1994/app-testing:10 .'
             }
         }
-        
+        stage('login-to-docker') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+        stage('Push-to-Dockerhub') {
+            steps {
+                sh 'docker push dockerhub1994/app-testing:10'
+            }
+        }
     }
 }
