@@ -3,13 +3,13 @@ pipeline {
 
     environment {
         PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
-        
+        SONARQUBE_HOME = "/opt/sonarqube/bin/linux-x86-64"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/your/repo.git'
+                git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'
             }
         }
 
@@ -30,6 +30,4 @@ pipeline {
             }
         }
     }
-
-    
 }
