@@ -21,5 +21,11 @@ pipeline {
                 mail bcc: '', body: 'proved', cc: '', from: '', replyTo: '', subject: 'Testing Completed Successfully', to: 'rajatpbhagat@gmail.com'
             }
         }
+        stage('static-code-analysis') {
+         steps {
+             sh ' mvn sonar:sonar'
+         }    
+        }
+        
     }
 }
