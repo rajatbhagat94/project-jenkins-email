@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         PATH="/opt/apache-maven-3.9.6/bin:$PATH"  // Correct PATH setting
-        DOCKERHUB_CREDENTIALS = credentials ('docker-login')
     }
 
     stages {
