@@ -1,32 +1,35 @@
 pipeline {
-    agent any  // Replace with a specific agent label if needed
+    agent any
 
     environment {
-        PATH = "/opt/apache-maven-3.9.6/bin:$PATH"  // Correct PATH setting
+        PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
+        SONARQUBE_HOME = "/opt/sonarqube/bin/linux-x86-64"
     }
 
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/rajatbhagat94/project-jenkins-email.git'  // Specify branch
+                git branch: 'master', url: 'https://github.com/your/repo.git'
             }
         }
-        stage('build') {
+
+        stage('Build') {
             steps {
                 sh 'mvn clean install'
             }
         }
-        stage('Mail-notifications') {
+
+        stage('Static Code Analysis') {
             steps {
-                mail bcc: '', body: 'proved', cc: '', from: '', replyTo: '', subject: 'Testing Completed Successfully', to: 'rajatpbhagat@gmail.com'
-            }
-        }
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonarqube-7.8') {
-                    sh "mvn sonar:sonar"
+                script {
+                    def scannerHome = tool 'Sonarqube-Scanner'
+                    withSonarQubeEnv('sonarqube-7.8') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
                 }
             }
         }
     }
+
+    
 }
