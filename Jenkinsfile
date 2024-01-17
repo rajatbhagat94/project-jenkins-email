@@ -21,11 +21,11 @@ pipeline {
                 mail bcc: '', body: 'proved', cc: '', from: '', replyTo: '', subject: 'Testing Completed Successfully', to: 'rajatpbhagat@gmail.com'
             }
         }
-        stage('static-code-analysis') {
+        stage('SonarQube Analysis') {
             steps {
-                    withSonarQubeEnv('Sonarqube-7.8') {
-                        sh 'mvn sonar:sonar'
-                    }
+                withSonarQubeEnv('Sonarqube-7.8') {
+                    sh "mvn sonar:sonar"
+                }
             }
         }
     }
