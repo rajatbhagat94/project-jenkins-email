@@ -22,12 +22,13 @@ pipeline {
             }
         }
         stage('static-code-analysis') {
-         steps {
-              withSonarQubeEnv('Sonarqube-7.8') {
-                sh 'mvn clean package sonar:sonar'
-              }
-            }    
+            steps {
+                script {
+                    withSonarQubeEnv('Sonarqube-7.8') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
         }
-        
     }
 }
