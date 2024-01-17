@@ -16,6 +16,8 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-        
+         stage('Mail-notifications')
+            steps {
+        mail bcc: '', body: 'proved', cc: '', from: '', replyTo: '', subject: 'Testing Completed Successfully', to: 'rajatpbhagat@gmail.com'
     }
 }
