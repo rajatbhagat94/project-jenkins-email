@@ -21,7 +21,7 @@ pipeline {
         stage('Static Code Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('sonarqube-7.8') {
+                    withSonarQubeEnv('sonar') {
                     sh 'mvn sonar:sonar'
                     }
                 }
