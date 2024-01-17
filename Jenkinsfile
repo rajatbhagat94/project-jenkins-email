@@ -23,7 +23,7 @@ pipeline {
         }
         stage('static-code-analysis') {
          steps {
-              withSonarQubeEnv('sonarqube-7.8') {
+              withSonarQubeEnv('Sonarqube-7.8') {
                 sh 'mvn clean package sonar:sonar'
               }
             }    
