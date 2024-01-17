@@ -17,25 +17,6 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-         stage('email-notifi') {
-            steps {
-               mail bcc: '', body: 'Testing Done', cc: '', from: '', replyTo: '', subject: 'FOR TESTING ', to: 'rajatpbhagat@gmail.com'
-            }
-        } 
-        stage('docker-build'){
-            steps {
-                sh 'docker build -t dockerhub1994/app-testing:10 .'
-            }
-        }
-        stage('login-to-docker') {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-        stage('Push-to-Dockerhub') {
-            steps {
-                sh 'docker push dockerhub1994/app-testing:10'
-            }
-        }
+        
     }
 }
