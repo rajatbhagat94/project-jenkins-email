@@ -2,7 +2,7 @@ pipeline {
     agent any  // Replace with a specific agent label if needed
 
     environment {
-        PATH="/opt/apache-maven-3.9.6/bin:$PATH"  // Correct PATH setting
+        PATH = "/opt/apache-maven-3.9.6/bin:$PATH"  // Correct PATH setting
     }
 
     stages {
@@ -16,9 +16,10 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-         stage('Mail-notifications')
+        stage('Mail-notifications') {
             steps {
-        mail bcc: '', body: 'proved', cc: '', from: '', replyTo: '', subject: 'Testing Completed Successfully', to: 'rajatpbhagat@gmail.com'
+                mail bcc: '', body: 'proved', cc: '', from: '', replyTo: '', subject: 'Testing Completed Successfully', to: 'rajatpbhagat@gmail.com'
+            }
+        }
     }
-}
 }
